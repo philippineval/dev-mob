@@ -32,12 +32,14 @@ class LoginPage extends StatelessWidget {
             const EmailField(),
             const SizedBox(height: 16),
 
-            // Bouton Continue (widget dédié)
             ContinueButton(
               onPressed: () {
                 debugPrint('Continue pressed');
               },
             ),
+
+            const SizedBox(height: 20),
+            const OrSeparator(),
           ],
         ),
       ),
@@ -51,7 +53,6 @@ class EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      autofocus: false,
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
         hintText: 'Email Address',
@@ -99,7 +100,7 @@ class ContinueButton extends StatelessWidget {
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: const Color(0xFF238A9A), // teal Figma-like
+          backgroundColor: const Color(0xFF238A9A),
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -111,6 +112,40 @@ class ContinueButton extends StatelessWidget {
         ),
         child: const Text('Continue'),
       ),
+    );
+  }
+}
+
+class OrSeparator extends StatelessWidget {
+  const OrSeparator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: const [
+        Expanded(
+          child: Divider(
+            thickness: 1,
+            color: Color(0xFFE5E7EB),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'Or',
+            style: TextStyle(
+              color: Color(0xFF6B7280),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Divider(
+            thickness: 1,
+            color: Color(0xFFE5E7EB),
+          ),
+        ),
+      ],
     );
   }
 }
