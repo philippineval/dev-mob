@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -40,6 +41,25 @@ class LoginPage extends StatelessWidget {
 
             const SizedBox(height: 20),
             const OrSeparator(),
+            const SizedBox(height: 20),
+
+            SocialLoginButton(
+              label: 'Continue with Apple',
+              iconPath: 'assets/apple_logo.svg',
+              onPressed: () {},
+            ),
+            const SizedBox(height: 12),
+            SocialLoginButton(
+              label: 'Continue with Google',
+              iconPath: 'assets/google_logo.svg',
+              onPressed: () {},
+            ),
+            const SizedBox(height: 12),
+            SocialLoginButton(
+              label: 'Continue with Facebook',
+              iconPath: 'assets/facebook_logo.svg',
+              onPressed: () {},
+            ),
           ],
         ),
       ),
@@ -146,6 +166,55 @@ class OrSeparator extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class SocialLoginButton extends StatelessWidget {
+  final String label;
+  final String iconPath;
+  final VoidCallback? onPressed;
+
+  const SocialLoginButton({
+    super.key,
+    required this.label,
+    required this.iconPath,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 52,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          side: const BorderSide(color: Color(0xFFE5E7EB)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              iconPath,
+              width: 20,
+              height: 20,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF111827),
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
