@@ -7,22 +7,11 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Log in or sign up',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        title: const Text('Log in or sign up'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            EmailField(),
-          ],
-        ),
+      body: const Padding(
+        padding: EdgeInsets.all(24),
+        child: EmailField(),
       ),
     );
   }
@@ -33,14 +22,11 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      keyboardType: TextInputType.emailAddress,
+    return const TextField(
+      autofocus: false,
       decoration: InputDecoration(
-        hintText: 'Email Address',
         prefixIcon: Icon(Icons.email_outlined),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        hintText: 'Email Address',
       ),
     );
   }
