@@ -31,17 +31,26 @@ class LoginPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 16),
+
+            // 1) Champ adresse email
             const EmailField(),
             const SizedBox(height: 16),
 
+            // 2) Bouton Continue (avec VoidCallback? onPressed)
             ContinueButton(
-              onPressed: () {},
+              onPressed: () {
+                debugPrint('Continue pressed');
+              },
             ),
 
             const SizedBox(height: 20),
+
+            // 3) Séparateur "Or"
             const OrSeparator(),
+
             const SizedBox(height: 20),
 
+            // 4) Boutons "Continue with ..." (un seul widget réutilisé)
             SocialLoginButton(
               label: 'Continue with Apple',
               iconPath: 'assets/apple_logo.svg',
@@ -66,6 +75,9 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+// --------------------
+// Widget : Champ email
+// --------------------
 class EmailField extends StatelessWidget {
   const EmailField({super.key});
 
@@ -73,11 +85,16 @@ class EmailField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       autofocus: false,
+      keyboardType: TextInputType.emailAddress,
       style: const TextStyle(color: AppColors.textPrimary),
       decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.email_outlined, color: AppColors.textPrimary),
+        prefixIcon: const Icon(
+          Icons.email_outlined,
+          color: AppColors.textPrimary,
+        ),
         hintText: 'Email Address',
         hintStyle: const TextStyle(color: AppColors.textSecondary),
+
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
@@ -97,6 +114,9 @@ class EmailField extends StatelessWidget {
   }
 }
 
+// ------------------------
+// Widget : Bouton Continue
+// ------------------------
 class ContinueButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
@@ -112,14 +132,14 @@ class ContinueButton extends StatelessWidget {
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.buttonPrimaryBackground,
           foregroundColor: AppColors.buttonPrimaryText,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          backgroundColor: AppColors.buttonPrimaryBackground,
           textStyle: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
         child: const Text('Continue'),
@@ -128,6 +148,9 @@ class ContinueButton extends StatelessWidget {
   }
 }
 
+// ---------------------
+// Widget : Séparateur Or
+// ---------------------
 class OrSeparator extends StatelessWidget {
   const OrSeparator({super.key});
 
@@ -162,6 +185,9 @@ class OrSeparator extends StatelessWidget {
   }
 }
 
+// ----------------------------------
+// Widget : Bouton "Continue with ..."
+// ----------------------------------
 class SocialLoginButton extends StatelessWidget {
   final String label;
   final String iconPath;
@@ -190,14 +216,18 @@ class SocialLoginButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(iconPath, width: 20, height: 20),
+            SvgPicture.asset(
+              iconPath,
+              width: 20,
+              height: 20,
+            ),
             const SizedBox(width: 12),
             Text(
               label,
               style: const TextStyle(
                 color: AppColors.buttonSecondaryText,
-                fontWeight: FontWeight.w700,
                 fontSize: 16,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
