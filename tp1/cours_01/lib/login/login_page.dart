@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cours_01/res/colors.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -19,7 +20,7 @@ class LoginPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.w800,
-            color: Color(0xFF111827),
+            color: AppColors.textPrimary,
           ),
         ),
       ),
@@ -34,9 +35,7 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 16),
 
             ContinueButton(
-              onPressed: () {
-                debugPrint('Continue pressed');
-              },
+              onPressed: () {},
             ),
 
             const SizedBox(height: 20),
@@ -73,30 +72,23 @@ class EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
+      autofocus: false,
+      style: const TextStyle(color: AppColors.textPrimary),
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.email_outlined, color: AppColors.textPrimary),
         hintText: 'Email Address',
-        hintStyle: TextStyle(
-          color: Color(0xFF9CA3AF),
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
-        prefixIcon: Icon(
-          Icons.email_outlined,
-          color: Color(0xFF111827),
-        ),
-        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        hintStyle: const TextStyle(color: AppColors.textSecondary),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(
-            color: Color(0xFFE5E7EB),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: AppColors.inputFieldInactiveBackground,
             width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(
-            color: Color(0xFFCBD5E1),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: AppColors.inputFieldActiveBackground,
             width: 2,
           ),
         ),
@@ -120,8 +112,8 @@ class ContinueButton extends StatelessWidget {
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: const Color(0xFF238A9A),
-          foregroundColor: Colors.white,
+          backgroundColor: AppColors.buttonPrimaryBackground,
+          foregroundColor: AppColors.buttonPrimaryText,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -141,12 +133,12 @@ class OrSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         Expanded(
           child: Divider(
             thickness: 1,
-            color: Color(0xFFE5E7EB),
+            color: AppColors.divider,
           ),
         ),
         Padding(
@@ -154,7 +146,7 @@ class OrSeparator extends StatelessWidget {
           child: Text(
             'Or',
             style: TextStyle(
-              color: Color(0xFF6B7280),
+              color: AppColors.textSecondary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -162,7 +154,7 @@ class OrSeparator extends StatelessWidget {
         Expanded(
           child: Divider(
             thickness: 1,
-            color: Color(0xFFE5E7EB),
+            color: AppColors.divider,
           ),
         ),
       ],
@@ -190,7 +182,7 @@ class SocialLoginButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.white,
-          side: const BorderSide(color: Color(0xFFE5E7EB)),
+          side: const BorderSide(color: AppColors.buttonSecondaryBackground),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -198,16 +190,12 @@ class SocialLoginButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              iconPath,
-              width: 20,
-              height: 20,
-            ),
+            SvgPicture.asset(iconPath, width: 20, height: 20),
             const SizedBox(width: 12),
             Text(
               label,
               style: const TextStyle(
-                color: Color(0xFF111827),
+                color: AppColors.buttonSecondaryText,
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
