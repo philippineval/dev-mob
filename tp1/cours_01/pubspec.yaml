@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_svg: ^2.0.10
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -21,8 +24,16 @@ dev_dependencies:
     git:
       url: https://github.com/openfoodfacts/openfoodfacts_flutter_lints.git
 
+
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
+
+
+#flutter:
+ # uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -34,3 +45,4 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
+
