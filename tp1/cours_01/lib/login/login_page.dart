@@ -15,7 +15,33 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      body: const SizedBox(), // écran encore vide pour l’instant
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            EmailField(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EmailField extends StatelessWidget {
+  const EmailField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        hintText: 'Email Address',
+        prefixIcon: Icon(Icons.email_outlined),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 }
