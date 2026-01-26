@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cours_01/res/colors.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String _email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.white,
-        titleSpacing: 24,
+        titleSpacing: 16,
         title: const Text(
           'Log in or sign up',
           style: TextStyle(
@@ -26,45 +33,46 @@ class LoginPage extends StatelessWidget {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16),
-
-            // 1) Champ adresse email
-            const EmailField(),
-            const SizedBox(height: 16),
-
-            // 2) Bouton Continue (avec VoidCallback? onPressed)
-            ContinueButton(
-              onPressed: () {
-                debugPrint('Continue pressed');
+            EmailField(
+              onChanged: (String value) {
+                setState(() {
+                  _email = value;
+                });
               },
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            // 3) Séparateur "Or"
+            ContinueButton(
+              onPressed: _email.isNotEmpty
+                  ? () {
+                      debugPrint('Continue pressed with email: $_email');
+                    }
+                  : null,
+            ),
+
+            const SizedBox(height: 40),
             const OrSeparator(),
+            const SizedBox(height: 40),
 
-            const SizedBox(height: 20),
-
-            // 4) Boutons "Continue with ..." (un seul widget réutilisé)
-            SocialLoginButton(
-              label: 'Continue with Apple',
+            ContinueWithButton(
+              label: 'Apple',
               iconPath: 'assets/apple_logo.svg',
               onPressed: () {},
             ),
-            const SizedBox(height: 12),
-            SocialLoginButton(
-              label: 'Continue with Google',
+            const SizedBox(height: 16),
+            ContinueWithButton(
+              label: 'Google',
               iconPath: 'assets/google_logo.svg',
               onPressed: () {},
             ),
-            const SizedBox(height: 12),
-            SocialLoginButton(
-              label: 'Continue with Facebook',
+            const SizedBox(height: 16),
+            ContinueWithButton(
+              label: 'Facebook',
               iconPath: 'assets/facebook_logo.svg',
               onPressed: () {},
             ),
@@ -79,22 +87,24 @@ class LoginPage extends StatelessWidget {
 // Widget : Champ email
 // --------------------
 class EmailField extends StatelessWidget {
-  const EmailField({super.key});
+  final ValueChanged<String> onChanged;
+
+  const EmailField({
+    super.key,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       autofocus: false,
       keyboardType: TextInputType.emailAddress,
+      onChanged: onChanged,
       style: const TextStyle(color: AppColors.textPrimary),
       decoration: InputDecoration(
-        prefixIcon: const Icon(
-          Icons.email_outlined,
-          color: AppColors.textPrimary,
-        ),
+        prefixIcon: const Icon(Icons.email_outlined, color: AppColors.textPrimary),
         hintText: 'Email Address',
         hintStyle: const TextStyle(color: AppColors.textSecondary),
-
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
@@ -134,13 +144,8 @@ class ContinueButton extends StatelessWidget {
         style: FilledButton.styleFrom(
           foregroundColor: AppColors.buttonPrimaryText,
           backgroundColor: AppColors.buttonPrimaryBackground,
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         ),
         child: const Text('Continue'),
       ),
@@ -156,30 +161,19 @@ class OrSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Expanded(
-          child: Divider(
-            thickness: 1,
-            color: AppColors.divider,
+    return Row(
+      children: const [
+        Expanded(child: Divider()),
+        SizedBox(width: 10),
+        Text(
+          'Or',
+          style: TextStyle(
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            'Or',
-            style: TextStyle(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Divider(
-            thickness: 1,
-            color: AppColors.divider,
-          ),
-        ),
+        SizedBox(width: 10),
+        Expanded(child: Divider()),
       ],
     );
   }
@@ -188,12 +182,12 @@ class OrSeparator extends StatelessWidget {
 // ----------------------------------
 // Widget : Bouton "Continue with ..."
 // ----------------------------------
-class SocialLoginButton extends StatelessWidget {
+class ContinueWithButton extends StatelessWidget {
   final String label;
   final String iconPath;
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
 
-  const SocialLoginButton({
+  const ContinueWithButton({
     super.key,
     required this.label,
     required this.iconPath,
@@ -204,32 +198,30 @@ class SocialLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 52,
-      child: OutlinedButton(
+      child: FilledButton(
         onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
+        style: FilledButton.styleFrom(
           backgroundColor: Colors.white,
-          side: const BorderSide(color: AppColors.buttonSecondaryBackground),
+          foregroundColor: AppColors.buttonSecondaryText,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
+            side: const BorderSide(color: AppColors.buttonSecondaryBackground),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              iconPath,
-              width: 20,
-              height: 20,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.buttonSecondaryText,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+            SvgPicture.asset(iconPath, width: 22, height: 22),
+            Expanded(
+              child: Text(
+                'Continue with $label',
+                textAlign: TextAlign.center,
               ),
             ),
+            const SizedBox(width: 22),
           ],
         ),
       ),
