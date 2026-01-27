@@ -31,8 +31,6 @@ flutter:
   assets:
     - res/drawables/
     - res/svg/
-    - assets/images/
-
 
   fonts:
     - family: AppIcons
