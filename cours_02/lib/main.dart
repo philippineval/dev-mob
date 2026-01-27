@@ -5,6 +5,8 @@ import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/res/app_icons.dart';
 import 'package:formation_flutter/res/app_vectorial_images.dart';
 
+import 'screens/product_details_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -19,9 +21,11 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: AppColors.nutriscoreA),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.nutriscoreA),
         fontFamily: 'Avenir',
-        textTheme: TextTheme(headlineMedium: TextStyle()),
+        textTheme: const TextTheme(
+          headlineMedium: TextStyle(),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
@@ -34,7 +38,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.heightOf(context);
     AppLocalizations localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -44,8 +47,8 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 8.0),
+            icon: const Padding(
+              padding: EdgeInsetsDirectional.only(end: 8.0),
               child: Icon(AppIcons.barcode),
             ),
           ),
@@ -57,14 +60,15 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Spacer(flex: 20),
+              const Spacer(flex: 20),
               SvgPicture.asset(AppVectorialImages.illEmpty),
-              Spacer(flex: 15),
-              Text(
+              const Spacer(flex: 15),
+              const Text(
                 'Vous n\'avez pas encore scanné de produit',
                 textAlign: TextAlign.center,
               ),
-              Spacer(flex: 10),
+              const Spacer(flex: 10),
+
               TextButton(
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.blue,
@@ -73,17 +77,24 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(22.0)),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const ProductDetailsPage(),
+                    ),
+                  );
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(localizations.my_scans_screen_button.toUpperCase()),
                     const SizedBox(width: 4.0),
-                    Icon(Icons.arrow_right_alt_rounded),
+                    const Icon(Icons.arrow_right_alt_rounded),
                   ],
                 ),
               ),
-              Spacer(flex: 20),
+
+              const Spacer(flex: 20),
             ],
           ),
         ),
