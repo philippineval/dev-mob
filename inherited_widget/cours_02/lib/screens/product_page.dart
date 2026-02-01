@@ -6,7 +6,6 @@ import 'package:formation_flutter/res/app_icons.dart';
 import 'package:formation_flutter/res/app_theme_extension.dart';
 import 'package:formation_flutter/model/product_scope.dart';
 
-
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
 
@@ -14,60 +13,87 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = ProductScope.of(context);
+    const isLoading = false;
+
     return Scaffold(
-      body: SizedBox.expand(
-        child: Stack(
-          children: [
-            PositionedDirectional(
-              top: 0.0,
-              start: 0.0,
-              end: 0.0,
+      body: isLoading
+          ? const LoadingView()
+          : const ProductSuccessView(),
+    );
+  }
+}
+
+class LoadingView extends StatelessWidget {
+  const LoadingView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+}
+
+class ProductSuccessView extends StatelessWidget {
+  const ProductSuccessView({super.key});
+
+  static const double IMAGE_HEIGHT = 300.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final product = ProductScope.of(context);
+
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          PositionedDirectional(
+            top: 0.0,
+            start: 0.0,
+            end: 0.0,
+            height: IMAGE_HEIGHT,
+            child: Image.network(
+              product.picture ??
+                  'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1310&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              width: double.infinity,
               height: IMAGE_HEIGHT,
-              child: Image.network(
-                product.picture ?? 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1310&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                width: double.infinity,
-                height: IMAGE_HEIGHT,
-                fit: BoxFit.fitWidth,
-              ),
-
-
+              fit: BoxFit.fitWidth,
             ),
-            PositionedDirectional(
-              top: IMAGE_HEIGHT - 16.0,
-              start: 0.0,
-              end: 0.0,
-              bottom: 0.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(16.0),
-                  ),
-                  color: Colors.white,
+          ),
+          PositionedDirectional(
+            top: IMAGE_HEIGHT - 16.0,
+            start: 0.0,
+            end: 0.0,
+            bottom: 0.0,
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(16.0),
                 ),
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 20.0,
-                  vertical: 30.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
+                color: Colors.white,
+              ),
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 20.0,
+                vertical: 30.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     product.name ?? '',
                     style: context.theme.title1,
                   ),
-
                   Text(
-                    (product.brands?.isNotEmpty ?? false) ? product.brands!.first : '',
+                    (product.brands?.isNotEmpty ?? false)
+                        ? product.brands!.first
+                        : '',
                     style: context.theme.title2,
                   ),
-                   Scores(),
-                  ],
-                ),
+                  const Scores(),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -89,14 +115,16 @@ class Scores extends StatelessWidget {
               Expanded(
                 flex: 44,
                 child: _Nutriscore(
-                  nutriscore: product.nutriScore ?? ProductNutriScore.unknown,
+                  nutriscore:
+                      product.nutriScore ?? ProductNutriScore.unknown,
                 ),
               ),
               const VerticalDivider(),
               Expanded(
                 flex: 56,
                 child: _NovaGroup(
-                  novaScore: product.novaScore ?? ProductNovaScore.unknown,
+                  novaScore:
+                      product.novaScore ?? ProductNovaScore.unknown,
                 ),
               ),
             ],
@@ -104,12 +132,12 @@ class Scores extends StatelessWidget {
         ),
         const Divider(),
         _GreenScore(
-          greenScore: product.greenScore ?? ProductGreenScore.unknown,
+          greenScore:
+              product.greenScore ?? ProductGreenScore.unknown,
         ),
       ],
     );
   }
-
 }
 
 class _Nutriscore extends StatelessWidget {
@@ -120,9 +148,8 @@ class _Nutriscore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Text(
           AppLocalizations.of(context)!.nutriscore,
           style: context.theme.title3,
@@ -140,8 +167,8 @@ class _Nutriscore extends StatelessWidget {
       ProductNutriScore.C => 'res/drawables/nutriscore_c.png',
       ProductNutriScore.D => 'res/drawables/nutriscore_d.png',
       ProductNutriScore.E => 'res/drawables/nutriscore_e.png',
-      ProductNutriScore.unknown => 'res/drawables/nutriscore_e.png',
-
+      ProductNutriScore.unknown =>
+          'res/drawables/nutriscore_e.png',
     };
   }
 }
@@ -154,15 +181,15 @@ class _NovaGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Text(
           AppLocalizations.of(context)!.nova_group,
           style: context.theme.title3,
         ),
         const SizedBox(height: 5.0),
-        Text(_findLabel(), style: const TextStyle(color: AppColors.grey2)),
+        Text(_findLabel(),
+            style: const TextStyle(color: AppColors.grey2)),
       ],
     );
   }
@@ -171,7 +198,8 @@ class _NovaGroup extends StatelessWidget {
     return switch (novaScore) {
       ProductNovaScore.group1 =>
         'Aliments non transformés ou transformés minimalement',
-      ProductNovaScore.group2 => 'Ingrédients culinaires transformés',
+      ProductNovaScore.group2 =>
+        'Ingrédients culinaires transformés',
       ProductNovaScore.group3 => 'Aliments transformés',
       ProductNovaScore.group4 =>
         'Produits alimentaires et boissons ultra-transformés',
@@ -188,16 +216,15 @@ class _GreenScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Text(
           AppLocalizations.of(context)!.greenscore,
           style: context.theme.title3,
         ),
         const SizedBox(height: 5.0),
         Row(
-          children: <Widget>[
+          children: [
             Icon(_findIcon(), color: _findIconColor()),
             const SizedBox(width: 10.0),
             Expanded(
@@ -240,28 +267,21 @@ class _GreenScore extends StatelessWidget {
 
   String _findLabel() {
     return switch (greenScore) {
-      ProductGreenScore.APlus => 'Très faible impact environnemental',
-      ProductGreenScore.A => 'Très faible impact environnemental',
-      ProductGreenScore.B => 'Faible impact environnemental',
-      ProductGreenScore.C => "Impact modéré sur l'environnement",
-      ProductGreenScore.D => 'Impact environnemental élevé',
-      ProductGreenScore.E => 'Impact environnemental très élevé',
-      ProductGreenScore.F => 'Impact environnemental très élevé',
+      ProductGreenScore.APlus =>
+        'Très faible impact environnemental',
+      ProductGreenScore.A =>
+        'Très faible impact environnemental',
+      ProductGreenScore.B =>
+        'Faible impact environnemental',
+      ProductGreenScore.C =>
+        "Impact modéré sur l'environnement",
+      ProductGreenScore.D =>
+        'Impact environnemental élevé',
+      ProductGreenScore.E =>
+        'Impact environnemental très élevé',
+      ProductGreenScore.F =>
+        'Impact environnemental très élevé',
       ProductGreenScore.unknown => 'Score non calculé',
     };
-  }
-}
-
-class Test extends StatefulWidget {
-  const Test({super.key});
-
-  @override
-  State<Test> createState() => _TestState();
-}
-
-class _TestState extends State<Test> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
