@@ -4,7 +4,9 @@ import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/res/app_icons.dart';
 import 'package:formation_flutter/res/app_theme_extension.dart';
-import 'package:formation_flutter/model/product_scope.dart';
+import 'package:provider/provider.dart';
+import 'package:formation_flutter/model/product_notifier.dart';
+
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -12,15 +14,21 @@ class ProductPage extends StatelessWidget {
   static const double IMAGE_HEIGHT = 300.0;
 
   @override
-  Widget build(BuildContext context) {
-    const isLoading = false;
-
-    return Scaffold(
-      body: isLoading
-          ? const LoadingView()
-          : const ProductSuccessView(),
-    );
-  }
+Widget build(BuildContext context) {
+  return ChangeNotifierProvider(
+    create: (_) => ProductNotifier()..loadProduct(),
+    child: Scaffold(
+      body: Consumer<ProductNotifier>(
+        builder: (context, notifier, _) {
+          if (notifier.product == null) {
+            return const LoadingView();
+          }
+          return const ProductSuccessView();
+        },
+      ),
+    ),
+  );
+}
 }
 
 class LoadingView extends StatelessWidget {
@@ -41,7 +49,8 @@ class ProductSuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = ProductScope.of(context);
+    final product = context.watch<ProductNotifier>().product!;
+
 
     return SizedBox.expand(
       child: Stack(
@@ -104,7 +113,8 @@ class Scores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = ProductScope.of(context);
+    final product = context.watch<ProductNotifier>().product!;
+
 
     return Column(
       children: [
