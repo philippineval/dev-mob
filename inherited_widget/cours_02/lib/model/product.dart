@@ -49,7 +49,102 @@ class Product {
     this.isVegan,
     this.isVegetarian,
   });
+
+    factory Product.fromJson(Map<String, dynamic> json) {
+      final data = (json['product'] is Map<String, dynamic>)
+          ? json['product'] as Map<String, dynamic>
+          : json;
+
+      final barcode = (data['barcode'] ??
+              data['code'] ??
+              json['barcode'] ??
+              json['code'] ??
+              '')
+          .toString();
+
+      return Product(
+        barcode: barcode.isEmpty ? 'unknown' : barcode,
+
+        name: (data['name'] ??
+                data['product_name'] ??
+                data['product_name_fr'] ??
+                data['productName'])
+            ?.toString(),
+
+        picture: (data['picture'] ??
+                data['image_front_url'] ??
+                data['image_url'] ??
+                data['imageFrontUrl'])
+            ?.toString(),
+
+        brands: _asStringList(data['brands'] ?? data['brands_tags']),
+
+        nutriScore: _nutriScoreFrom(
+          data['nutriscore'] ?? data['nutriscore_grade'] ?? data['nutriScore'],
+        ),
+
+        novaScore: _novaFrom(
+          data['novaScore'] ?? data['nova_group'] ?? data['novaGroup'],
+        ),
+
+        greenScore: _greenFrom(
+          data['greenScore'] ?? data['ecoscore_grade'] ?? data['ecoScore'],
+        ),
+      );
+    }
+
+
+  static List<String>? _asStringList(dynamic v) {
+    if (v == null) return null;
+    if (v is List) return v.map((e) => e.toString()).toList();
+    final s = v.toString().trim();
+    if (s.isEmpty) return null;
+    if (s.contains(',')) {
+      return s.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+    }
+    return [s];
+  }
+
+  static ProductNutriScore _nutriScoreFrom(dynamic v) {
+    final s = (v ?? '').toString().toLowerCase();
+    return switch (s) {
+      'a' => ProductNutriScore.A,
+      'b' => ProductNutriScore.B,
+      'c' => ProductNutriScore.C,
+      'd' => ProductNutriScore.D,
+      'e' => ProductNutriScore.E,
+      _ => ProductNutriScore.unknown,
+    };
+  }
+
+  static ProductNovaScore _novaFrom(dynamic v) {
+    final s = (v ?? '').toString().toLowerCase();
+    return switch (s) {
+      '1' || 'group1' => ProductNovaScore.group1,
+      '2' || 'group2' => ProductNovaScore.group2,
+      '3' || 'group3' => ProductNovaScore.group3,
+      '4' || 'group4' => ProductNovaScore.group4,
+      _ => ProductNovaScore.unknown,
+    };
+  }
+
+  static ProductGreenScore _greenFrom(dynamic v) {
+    final s = (v ?? '').toString().toLowerCase();
+    return switch (s) {
+      'a+' || 'aplus' => ProductGreenScore.APlus,
+      'a' => ProductGreenScore.A,
+      'b' => ProductGreenScore.B,
+      'c' => ProductGreenScore.C,
+      'd' => ProductGreenScore.D,
+      'e' => ProductGreenScore.E,
+      'f' => ProductGreenScore.F,
+      _ => ProductGreenScore.unknown,
+    };
+  }
+
 }
+
+
 
 class NutritionFacts {
   final String servingSize;
